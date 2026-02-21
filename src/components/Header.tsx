@@ -1,6 +1,6 @@
 export function Header() {
     return (
-        <header className="flex justify-between p-2 mb-3">
+        <header className="flex justify-between p-2">
             <div>
                 <img
                     src="src/assets/images/logo-large.svg"
