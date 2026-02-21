@@ -1,6 +1,6 @@
 export function Header() {
     return (
-        <header className="flex justify-between p-2">
+        <header className="flex justify-between p-2 mb-3">
             <div>
                 <img
                     src="src/assets/images/logo-large.svg"
@@ -14,7 +14,7 @@ export function Header() {
                 />
             </div>
             <div>
-                <p className="text-[hsl(240,3%,46%)] flex flex-row gap-2">
+                <p className="text-[hsl(240,1%,59%)] flex flex-row gap-2">
                     <img
                         src="src/assets/images/icon-personal-best.svg"
                         alt=""
