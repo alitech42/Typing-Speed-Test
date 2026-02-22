@@ -7,5 +7,5 @@ export function Selectors() {
             <DifficultySelector />
             <ModelSelector />
         </div>
-    )
+    );
 }
