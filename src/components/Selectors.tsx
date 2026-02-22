@@ -1,11 +1,11 @@
 import { DifficultySelector } from "./DifficultySelector";
-import { ModelSelector } from "./ModeSelector";
+import { ModeSelector } from "./ModeSelector";
 
 export function Selectors() {
     return (
         <div className="flex flex-row gap-4">
             <DifficultySelector />
-            <ModelSelector />
+            <ModeSelector />
         </div>
     );
 }
