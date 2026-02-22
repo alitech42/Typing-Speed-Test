@@ -15,7 +15,7 @@ export function DropdownMenu({
 }: DropdownMenuProps) {
     return (
         <div
-            className={`${isOpen ? "flex" : "hidden"} flex flex-col absolute border mt-2 rounded-2xl border-white w-full`}
+            className={`${isOpen ? "flex" : "hidden"} flex flex-col absolute mt-2 rounded-lg bg-[hsl(0,0%,15%)] w-full`}
         >
             {options.map((option) => (
                 <div key={option}>
