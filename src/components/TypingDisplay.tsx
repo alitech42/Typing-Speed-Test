@@ -11,7 +11,7 @@ export function TypingDisplay({
         <div>
             {typingSequence.map(({ char, status }, index) => (
                 <span
-                    className={`${status === "correct" ? "text-green-500" : status === "false" ? "text-red-600 border-b-3 border-red-600" : "text-[hsl(240,1%,59%)]"} ${typingIndex === index && "bg-[hsl(0,0%,15%)]"} text-4xl`}
+                    className={`${status === "correct" ? "text-[hsl(140,63%,57%)]" : status === "false" ? "text-[hsl(354,63%,57%)] border-b-3 border-[hsl(354,63%,57%)]" : "text-[hsl(240,1%,59%)]"} ${typingIndex === index && "bg-[hsl(0,0%,15%)]"} text-4xl`}
                 >
                     {char}
                 </span>
