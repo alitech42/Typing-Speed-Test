@@ -4,50 +4,63 @@ import { Header } from "./components/Header";
 import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
-import data from './data.json'
+import data from "./data.json";
 
 function App() {
-
-    const [typingIndex, setTypingIndex] = useState(0)
+    const [typingIndex, setTypingIndex] = useState(0);
     const [typingSequence, setTypingSequence] = useState(() => {
-        const text = data.easy[Math.floor(Math.random() * data.easy.length)].text
-        const splittedText = text.split('')
-        return splittedText.map( (char) => ({char, status: "undefined"}))
-    })
+        const text =
+            data.easy[Math.floor(Math.random() * data.easy.length)].text;
+        const splittedText = text.split("");
+        return splittedText.map((char) => ({ char, status: "undefined" }));
+    });
 
-    useEffect(() => console.log(typingSequence), [typingSequence])
+    useEffect(() => console.log(typingSequence), [typingSequence]);
 
-    
-    
     useEffect(() => {
-        const handleKeyDown = (e:KeyboardEvent) => {
-            const currentType = typingSequence[typingIndex]
-            if(e.key === 'Shift' || e.key === 'Control' || e.key === 'Delete') return
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const currentType = typingSequence[typingIndex];
+            if (e.key === "Shift" || e.key === "Control" || e.key === "Delete")
+                return;
 
-            if(e.key === currentType.char) {
-                setTypingSequence(prev => prev.map((char, index) => index === typingIndex ? {...char, status: "correct"} : char))
-                console.log('xdddd')
+            if (e.key === currentType.char) {
+                setTypingSequence((prev) =>
+                    prev.map((char, index) =>
+                        index === typingIndex
+                            ? { ...char, status: "correct" }
+                            : char,
+                    ),
+                );
+                console.log("xdddd");
             } else {
-                setTypingSequence(prev => prev.map((char, index) => index === typingIndex ? {...char, status: "false"} : char))
-                console.log('LOL')
+                setTypingSequence((prev) =>
+                    prev.map((char, index) =>
+                        index === typingIndex
+                            ? { ...char, status: "false" }
+                            : char,
+                    ),
+                );
+                console.log("LOL");
             }
 
-            setTypingIndex(prev => prev + 1)
+            setTypingIndex((prev) => prev + 1);
+        };
 
-        }
-        
-        document.addEventListener('keydown', handleKeyDown)
-        return () => document.removeEventListener('keydown', handleKeyDown)
-    })
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    });
 
-    useEffect(() => console.log(typingIndex), [typingIndex])
+    useEffect(() => console.log(typingIndex), [typingIndex]);
 
     return (
         <div className="flex flex-col gap-5">
             <Header />
             <Stats />
             <Selectors />
-            <TypingDisplay typingSequence={typingSequence} typingIndex={typingIndex}/>
+            <TypingDisplay
+                typingSequence={typingSequence}
+                typingIndex={typingIndex}
+            />
         </div>
     );
 }
