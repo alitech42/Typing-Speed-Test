@@ -1,14 +1,52 @@
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Header } from "./components/Header";
 import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
+import { TypingDisplay } from "./components/TypingDisplay";
 
 function App() {
+
+    const [typingIndex, setTypingIndex] = useState(0)
+    const [typingSequence, setTypingSequence] = useState(() => {
+        const text = 'The sun rose over the quiet town. Birds sang in the trees as people woke up and started their day. It was going to be a warm and sunny morning.'
+        const splittedText = text.split('')
+        return splittedText.map( (char) => ({char, status: "undefined"}))
+    })
+
+    useEffect(() => console.log(typingSequence), [typingSequence])
+
+    
+    
+    useEffect(() => {
+        const handleKeyDown = (e:KeyboardEvent) => {
+            const currentType = typingSequence[typingIndex]
+            if(e.key === 'Shift' || e.key === 'Control' || e.key === 'Delete') return
+
+            if(e.key === currentType.char) {
+                setTypingSequence(prev => prev.map((char, index) => index === typingIndex ? {...char, status: "correct"} : char))
+                console.log('xdddd')
+            } else {
+                setTypingSequence(prev => prev.map((char, index) => index === typingIndex ? {...char, status: "false"} : char))
+                console.log('LOL')
+            }
+
+            setTypingIndex(prev => prev + 1)
+
+        }
+        
+        document.addEventListener('keydown', handleKeyDown)
+        return () => document.removeEventListener('keydown', handleKeyDown)
+    })
+
+    useEffect(() => console.log(typingIndex), [typingIndex])
+
     return (
         <div className="flex flex-col gap-5">
             <Header />
             <Stats />
             <Selectors />
+            <TypingDisplay typingSequence={typingSequence} typingIndex={typingIndex}/>
         </div>
     );
 }
