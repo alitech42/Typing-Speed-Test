@@ -4,12 +4,13 @@ import { Header } from "./components/Header";
 import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
+import data from './data.json'
 
 function App() {
 
     const [typingIndex, setTypingIndex] = useState(0)
     const [typingSequence, setTypingSequence] = useState(() => {
-        const text = 'The sun rose over the quiet town. Birds sang in the trees as people woke up and started their day. It was going to be a warm and sunny morning.'
+        const text = data.easy[Math.floor(Math.random() * data.easy.length)].text
         const splittedText = text.split('')
         return splittedText.map( (char) => ({char, status: "undefined"}))
     })
