@@ -14,8 +14,35 @@ function App() {
         const splittedText = text.split("");
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
-
+    const [time, setTime] = useState(60);
+    const minutes = (60 - time) / 60;
+    const correctTypes = typingSequence.filter(
+        ({ status }) => status === "correct",
+    ).length;
+    const falseTypes = typingSequence.filter(
+        ({ status }) => status === "false",
+    ).length;
+    const accuracy = (correctTypes / (correctTypes + falseTypes)) * 100;
+    const grossWPM = (correctTypes + falseTypes) / 5 / minutes;
+    const netWPM = grossWPM - falseTypes / minutes;
     useEffect(() => console.log(typingSequence), [typingSequence]);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTime((prev) => {
+                if (prev <= 0) {
+                    clearInterval(intervalId);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => console.log(time), [time]);
+    useEffect(() => console.log(`The wpm is ${netWPM}`), [time]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -55,7 +82,7 @@ function App() {
     return (
         <div className="flex flex-col gap-5">
             <Header />
-            <Stats />
+            <Stats wpm={grossWPM} accuracy={accuracy} time={time} />
             <Selectors />
             <TypingDisplay
                 typingSequence={typingSequence}
