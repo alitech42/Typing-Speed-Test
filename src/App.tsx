@@ -5,7 +5,7 @@ import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
 import data from "./data.json";
-import { useTimer } from "./utilities";
+import { useTimer, useWPM } from "./utilities";
 
 function App() {
     const [typingIndex, setTypingIndex] = useState(0);
@@ -16,16 +16,7 @@ function App() {
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
     const {time, decreement} = useTimer(60);
-    const minutes = (60 - time) / 60;
-    const correctTypes = typingSequence.filter(
-        ({ status }) => status === "correct",
-    ).length;
-    const falseTypes = typingSequence.filter(
-        ({ status }) => status === "false",
-    ).length;
-    const accuracy = (correctTypes / (correctTypes + falseTypes)) * 100;
-    const grossWPM = (correctTypes + falseTypes) / 5 / minutes;
-    const netWPM = grossWPM - falseTypes / minutes;
+    const {accuracy, grossWPM, netWPM} = useWPM(time, typingSequence)
     useEffect(() => console.log(typingSequence), [typingSequence]);
 
     useEffect(() => {
