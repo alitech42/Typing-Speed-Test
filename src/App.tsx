@@ -15,24 +15,8 @@ function App() {
         const splittedText = text.split("");
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
-    const { time, decreement } = useTimer(60);
-    const { accuracy, grossWPM, netWPM } = useWPM(time, typingSequence);
-    useEffect(() => console.log(typingSequence), [typingSequence]);
-
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            if (time <= 0) {
-                clearInterval(intervalId);
-                return 0;
-            }
-            decreement();
-        }, 1000);
-
-        return () => clearInterval(intervalId);
-    }, []);
-
-    useEffect(() => console.log(time), [time]);
-    useEffect(() => console.log(`The wpm is ${netWPM}`), [time]);
+    const {time} = useTimer(60);
+    const { accuracy, netWPM } = useWPM(time, typingSequence);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -61,12 +45,11 @@ function App() {
         return () => document.removeEventListener("keydown", handleKeyDown);
     });
 
-    useEffect(() => console.log(typingIndex), [typingIndex]);
 
     return (
         <div className="flex flex-col gap-5">
             <Header />
-            <Stats wpm={grossWPM} accuracy={accuracy} time={time} />
+            <Stats wpm={netWPM} accuracy={accuracy} time={time} />
             <Selectors />
             <TypingDisplay
                 typingSequence={typingSequence}
