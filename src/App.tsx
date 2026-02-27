@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import { Header } from "./components/Header";
 import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
 import data from "./data.json";
+import { useTimer, useTyping, useWPM } from "./utilities";
 
 function App() {
-    const [typingIndex, setTypingIndex] = useState(0);
-    const [typingSequence, setTypingSequence] = useState(() => {
-        const text =
-            data.easy[Math.floor(Math.random() * data.easy.length)].text;
-        const splittedText = text.split("");
-        return splittedText.map((char) => ({ char, status: "undefined" }));
-    });
-
-    useEffect(() => console.log(typingSequence), [typingSequence]);
+    const text = data.easy[Math.floor(Math.random() * data.easy.length)].text;
+    const { typingIndex, typingSequence, updateStatus, increaseIndex } =
+        useTyping(text);
+    const { time } = useTimer(60);
+    const { accuracy, netWPM } = useWPM(time, typingSequence);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -23,39 +20,22 @@ function App() {
             if (e.key === "Shift" || e.key === "Control" || e.key === "Delete")
                 return;
 
-            if (e.key === currentType.char) {
-                setTypingSequence((prev) =>
-                    prev.map((char, index) =>
-                        index === typingIndex
-                            ? { ...char, status: "correct" }
-                            : char,
-                    ),
-                );
-                console.log("xdddd");
-            } else {
-                setTypingSequence((prev) =>
-                    prev.map((char, index) =>
-                        index === typingIndex
-                            ? { ...char, status: "false" }
-                            : char,
-                    ),
-                );
-                console.log("LOL");
-            }
+            updateStatus(
+                typingIndex,
+                e.key === currentType.char ? "correct" : "false",
+            );
 
-            setTypingIndex((prev) => prev + 1);
+            increaseIndex();
         };
 
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    });
-
-    useEffect(() => console.log(typingIndex), [typingIndex]);
+    }, [typingIndex, typingSequence]);
 
     return (
         <div className="flex flex-col gap-5">
             <Header />
-            <Stats />
+            <Stats wpm={netWPM} accuracy={accuracy} time={time} />
             <Selectors />
             <TypingDisplay
                 typingSequence={typingSequence}
