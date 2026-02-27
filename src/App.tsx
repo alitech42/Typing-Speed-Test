@@ -15,17 +15,17 @@ function App() {
         const splittedText = text.split("");
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
-    const {time, decreement} = useTimer(60);
-    const {accuracy, grossWPM, netWPM} = useWPM(time, typingSequence)
+    const { time, decreement } = useTimer(60);
+    const { accuracy, grossWPM, netWPM } = useWPM(time, typingSequence);
     useEffect(() => console.log(typingSequence), [typingSequence]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-                if (time <= 0) {
-                    clearInterval(intervalId);
-                    return 0;
-                };
-                decreement()
+            if (time <= 0) {
+                clearInterval(intervalId);
+                return 0;
+            }
+            decreement();
         }, 1000);
 
         return () => clearInterval(intervalId);
@@ -40,25 +40,19 @@ function App() {
             if (e.key === "Shift" || e.key === "Control" || e.key === "Delete")
                 return;
 
-            if (e.key === currentType.char) {
-                setTypingSequence((prev) =>
-                    prev.map((char, index) =>
-                        index === typingIndex
-                            ? { ...char, status: "correct" }
-                            : char,
-                    ),
-                );
-                console.log("xdddd");
-            } else {
-                setTypingSequence((prev) =>
-                    prev.map((char, index) =>
-                        index === typingIndex
-                            ? { ...char, status: "false" }
-                            : char,
-                    ),
-                );
-                console.log("LOL");
-            }
+            setTypingSequence((prev) =>
+                prev.map((char, index) =>
+                    index === typingIndex
+                        ? {
+                              ...char,
+                              status:
+                                  e.key === currentType.char
+                                      ? "correct"
+                                      : "false",
+                          }
+                        : char,
+                ),
+            );
 
             setTypingIndex((prev) => prev + 1);
         };
