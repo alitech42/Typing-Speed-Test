@@ -5,6 +5,7 @@ import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
 import data from "./data.json";
+import { useTimer } from "./utilities";
 
 function App() {
     const [typingIndex, setTypingIndex] = useState(0);
@@ -14,7 +15,7 @@ function App() {
         const splittedText = text.split("");
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
-    const [time, setTime] = useState(60);
+    const {time, decreement} = useTimer(60);
     const minutes = (60 - time) / 60;
     const correctTypes = typingSequence.filter(
         ({ status }) => status === "correct",
@@ -29,13 +30,11 @@ function App() {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setTime((prev) => {
-                if (prev <= 0) {
+                if (time <= 0) {
                     clearInterval(intervalId);
                     return 0;
-                }
-                return prev - 1;
-            });
+                };
+                decreement()
         }, 1000);
 
         return () => clearInterval(intervalId);
