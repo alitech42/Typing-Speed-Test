@@ -6,6 +6,7 @@ export function useTyping(text: string) {
         const splittedText = text.split("");
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
+    const [startingIndex, setStartingIndex] = useState(0);
 
     const updateStatus = (index: number, status: string) => {
         setTypingSequence((prev) =>
@@ -20,9 +21,27 @@ export function useTyping(text: string) {
         );
     };
 
+    const getNewSequence = (text: string) => {
+        setTypingSequence((prev) => {
+            const splittedText = text.split("");
+            setStartingIndex(() => prev.length);
+            return [
+                ...prev,
+                ...splittedText.map((char) => ({ char, status: "undefined" })),
+            ];
+        });
+    };
+
     const increaseIndex = () => setTypingIndex((prev) => prev + 1);
 
-    return { typingIndex, typingSequence, updateStatus, increaseIndex };
+    return {
+        typingIndex,
+        startingIndex,
+        typingSequence,
+        updateStatus,
+        increaseIndex,
+        getNewSequence,
+    };
 }
 
 export function useTimer(initialTime: number) {

@@ -9,8 +9,14 @@ import { useTimer, useTyping, useWPM } from "./utilities";
 
 function App() {
     const text = data.easy[Math.floor(Math.random() * data.easy.length)].text;
-    const { typingIndex, typingSequence, updateStatus, increaseIndex } =
-        useTyping(text);
+    const {
+        typingIndex,
+        typingSequence,
+        startingIndex,
+        updateStatus,
+        increaseIndex,
+        getNewSequence,
+    } = useTyping(text);
     const { time } = useTimer(60);
     const { accuracy, netWPM } = useWPM(time, typingSequence);
 
@@ -32,14 +38,24 @@ function App() {
         return () => document.removeEventListener("keydown", handleKeyDown);
     }, [typingIndex, typingSequence]);
 
+    useEffect(() => {
+        if (typingIndex === typingSequence.length) {
+            const text =
+                data.easy[Math.floor(Math.random() * data.easy.length)].text;
+            getNewSequence(text);
+        }
+    }, [typingIndex, typingSequence.length]);
+
+    useEffect(() => console.log(startingIndex), [startingIndex]);
+
     return (
         <div className="flex flex-col gap-5">
             <Header />
             <Stats wpm={netWPM} accuracy={accuracy} time={time} />
             <Selectors />
             <TypingDisplay
-                typingSequence={typingSequence}
-                typingIndex={typingIndex}
+                typingSequence={typingSequence.slice(startingIndex)}
+                typingIndex={typingIndex - startingIndex}
             />
         </div>
     );
