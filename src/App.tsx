@@ -18,12 +18,16 @@ function App() {
         increaseIndex,
         getNewSequence,
     } = useTyping(text);
-    const { time } = useTimer(60);
-    const { accuracy, netWPM, correctTypes, falseTypes } = useWPM(time, typingSequence);
-    const isDone = true;
+    const { time, isDone } = useTimer(60);
+    const { accuracy, netWPM, correctTypes, falseTypes } = useWPM(
+        time,
+        typingSequence,
+    );
 
     useEffect(() => {
+        if (isDone) return;
         const handleKeyDown = (e: KeyboardEvent) => {
+            if (isDone) return;
             const currentType = typingSequence[typingIndex];
             if (e.key === "Shift" || e.key === "Control" || e.key === "Delete")
                 return;
@@ -38,9 +42,10 @@ function App() {
 
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [typingIndex, typingSequence]);
+    }, [typingIndex, typingSequence, isDone]);
 
     useEffect(() => {
+        if (isDone) return;
         if (typingIndex === typingSequence.length) {
             const text =
                 data.easy[Math.floor(Math.random() * data.easy.length)].text;
@@ -63,7 +68,12 @@ function App() {
                     />
                 </>
             ) : (
-                <Results wpm={netWPM} accuracy={accuracy} correctTypes={correctTypes} falseTypes={falseTypes}/>
+                <Results
+                    wpm={netWPM}
+                    accuracy={accuracy}
+                    correctTypes={correctTypes}
+                    falseTypes={falseTypes}
+                />
             )}
         </div>
     );
