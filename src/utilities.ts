@@ -78,5 +78,5 @@ export function useWPM(
     const grossWPM = (correctTypes + falseTypes) / 5 / minutes;
     const netWPM = grossWPM - falseTypes / minutes;
 
-    return { accuracy, grossWPM, netWPM };
+    return { accuracy, grossWPM, netWPM, correctTypes, falseTypes };
 }
