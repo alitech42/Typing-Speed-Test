@@ -46,6 +46,7 @@ export function useTyping(text: string) {
 
 export function useTimer(initialTime: number) {
     const [time, setTime] = useState(initialTime);
+    const isDone = time === 0
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -60,7 +61,8 @@ export function useTimer(initialTime: number) {
         return () => clearInterval(intervalId);
     }, []);
 
-    return { time };
+
+    return { time, isDone };
 }
 
 export function useWPM(
