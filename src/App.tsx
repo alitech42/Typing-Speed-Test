@@ -6,6 +6,7 @@ import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
 import data from "./data.json";
 import { useTimer, useTyping, useWPM } from "./utilities";
+import { Results } from "./components/Results";
 
 function App() {
     const text = data.easy[Math.floor(Math.random() * data.easy.length)].text;
@@ -18,7 +19,8 @@ function App() {
         getNewSequence,
     } = useTyping(text);
     const { time } = useTimer(60);
-    const { accuracy, netWPM } = useWPM(time, typingSequence);
+    const { accuracy, netWPM, correctTypes, falseTypes } = useWPM(time, typingSequence);
+    const isDone = true;
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -51,12 +53,18 @@ function App() {
     return (
         <div className="flex flex-col gap-5">
             <Header />
-            <Stats wpm={netWPM} accuracy={accuracy} time={time} />
-            <Selectors />
-            <TypingDisplay
-                typingSequence={typingSequence.slice(startingIndex)}
-                typingIndex={typingIndex - startingIndex}
-            />
+            {!isDone ? (
+                <>
+                    <Stats wpm={netWPM} accuracy={accuracy} time={time} />
+                    <Selectors />
+                    <TypingDisplay
+                        typingSequence={typingSequence.slice(startingIndex)}
+                        typingIndex={typingIndex - startingIndex}
+                    />
+                </>
+            ) : (
+                <Results wpm={netWPM} accuracy={accuracy} correctTypes={correctTypes} falseTypes={falseTypes}/>
+            )}
         </div>
     );
 }
