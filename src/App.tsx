@@ -6,6 +6,7 @@ import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
 import data from "./data.json";
 import { useTimer, useTyping, useWPM } from "./utilities";
+import { Results } from "./components/Results";
 
 function App() {
     const text = data.easy[Math.floor(Math.random() * data.easy.length)].text;
@@ -17,13 +18,18 @@ function App() {
         increaseIndex,
         getNewSequence,
     } = useTyping(text);
-    const { time } = useTimer(60);
-    const { accuracy, netWPM } = useWPM(time, typingSequence);
+    const { time, isDone } = useTimer(60);
+    const { accuracy, netWPM, correctTypes, falseTypes } = useWPM(
+        time,
+        typingSequence,
+    );
 
     useEffect(() => {
+        if (isDone) return;
         const handleKeyDown = (e: KeyboardEvent) => {
+            if (isDone) return;
             const currentType = typingSequence[typingIndex];
-            if (e.key === "Shift" || e.key === "Control" || e.key === "Delete")
+            if (e.key.length > 1)
                 return;
 
             updateStatus(
@@ -36,9 +42,10 @@ function App() {
 
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [typingIndex, typingSequence]);
+    }, [typingIndex, typingSequence, isDone]);
 
     useEffect(() => {
+        if (isDone) return;
         if (typingIndex === typingSequence.length) {
             const text =
                 data.easy[Math.floor(Math.random() * data.easy.length)].text;
@@ -51,12 +58,23 @@ function App() {
     return (
         <div className="flex flex-col gap-5">
             <Header />
-            <Stats wpm={netWPM} accuracy={accuracy} time={time} />
-            <Selectors />
-            <TypingDisplay
-                typingSequence={typingSequence.slice(startingIndex)}
-                typingIndex={typingIndex - startingIndex}
-            />
+            {!isDone ? (
+                <>
+                    <Stats wpm={netWPM} accuracy={accuracy} time={time} />
+                    <Selectors />
+                    <TypingDisplay
+                        typingSequence={typingSequence.slice(startingIndex)}
+                        typingIndex={typingIndex - startingIndex}
+                    />
+                </>
+            ) : (
+                <Results
+                    wpm={netWPM}
+                    accuracy={accuracy}
+                    correctTypes={correctTypes}
+                    falseTypes={falseTypes}
+                />
+            )}
         </div>
     );
 }
