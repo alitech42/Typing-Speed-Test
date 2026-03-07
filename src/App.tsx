@@ -29,7 +29,7 @@ function App() {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (isDone) return;
             const currentType = typingSequence[typingIndex];
-            if (e.key === "Shift" || e.key === "Control" || e.key === "Delete")
+            if (e.key.length > 1)
                 return;
 
             updateStatus(
