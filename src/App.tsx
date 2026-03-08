@@ -17,26 +17,23 @@ function App() {
         updateStatus,
         increaseIndex,
         getNewSequence,
-        resetSequence
+        resetSequence,
     } = useTyping(text);
     const { time, isDone, resetTimer } = useTimer(60);
-    const { accuracy, netWPM, correctTypes, falseTypes, best, updateBest } = useWPM(
-        time,
-        typingSequence,
-    );
+    const { accuracy, netWPM, correctTypes, falseTypes, best, updateBest } =
+        useWPM(time, typingSequence);
 
     useEffect(() => {
         if (isDone) {
-            if(best < netWPM) {
-                updateBest(netWPM)
+            if (best < netWPM) {
+                updateBest(netWPM);
             }
-            return
-        };
+            return;
+        }
         const handleKeyDown = (e: KeyboardEvent) => {
             if (isDone) return;
             const currentType = typingSequence[typingIndex];
-            if (e.key.length > 1)
-                return;
+            if (e.key.length > 1) return;
 
             updateStatus(
                 typingIndex,
@@ -63,7 +60,7 @@ function App() {
 
     return (
         <div className="flex flex-col gap-5">
-            <Header best={best}/>
+            <Header best={best} />
             {!isDone ? (
                 <>
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />
@@ -79,7 +76,15 @@ function App() {
                     accuracy={accuracy}
                     correctTypes={correctTypes}
                     falseTypes={falseTypes}
-                    resetters={[resetTimer, () => resetSequence(data.easy[Math.floor(Math.random() * data.easy.length)].text)]}
+                    resetters={[
+                        resetTimer,
+                        () =>
+                            resetSequence(
+                                data.easy[
+                                    Math.floor(Math.random() * data.easy.length)
+                                ].text,
+                            ),
+                    ]}
                 />
             )}
         </div>

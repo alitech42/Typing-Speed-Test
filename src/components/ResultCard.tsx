@@ -1,7 +1,7 @@
 type ResultCardProps = {
     label: string;
     value: string | number;
-    color: string
+    color: string;
 };
 
 export function ResultCard({ label, value, color }: ResultCardProps) {

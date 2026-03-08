@@ -1,4 +1,4 @@
-export function Header({best}: {best: number}) {
+export function Header({ best }: { best: number }) {
     return (
         <header className="flex justify-between p-2">
             <div>

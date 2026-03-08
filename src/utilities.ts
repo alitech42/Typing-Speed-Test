@@ -36,10 +36,10 @@ export function useTyping(text: string) {
         setTypingSequence(() => {
             const splittedText = text.split("");
             return splittedText.map((char) => ({ char, status: "undefined" }));
-    });
-    setTypingIndex(0)
-    setStartingIndex(0)
-    }
+        });
+        setTypingIndex(0);
+        setStartingIndex(0);
+    };
 
     const increaseIndex = () => setTypingIndex((prev) => prev + 1);
 
@@ -50,13 +50,13 @@ export function useTyping(text: string) {
         updateStatus,
         increaseIndex,
         getNewSequence,
-        resetSequence
+        resetSequence,
     };
 }
 
 export function useTimer(initialTime: number) {
     const [time, setTime] = useState(initialTime);
-    const isDone = time === 0
+    const isDone = time === 0;
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -65,8 +65,7 @@ export function useTimer(initialTime: number) {
         return () => clearInterval(intervalId);
     }, []);
 
-    const resetTimer = () => setTime(initialTime)
-
+    const resetTimer = () => setTime(initialTime);
 
     return { time, isDone, resetTimer };
 }
@@ -85,9 +84,17 @@ export function useWPM(
     const accuracy = (correctTypes / (correctTypes + falseTypes)) * 100;
     const grossWPM = (correctTypes + falseTypes) / 5 / minutes;
     const netWPM = grossWPM - falseTypes / minutes;
-    const [best, setBest] = useState(0)
+    const [best, setBest] = useState(0);
 
-    const updateBest = (newBest: number) => setBest(newBest) 
+    const updateBest = (newBest: number) => setBest(newBest);
 
-    return { accuracy, grossWPM, netWPM, correctTypes, falseTypes, best, updateBest};
+    return {
+        accuracy,
+        grossWPM,
+        netWPM,
+        correctTypes,
+        falseTypes,
+        best,
+        updateBest,
+    };
 }
