@@ -18,14 +18,19 @@ function App() {
         increaseIndex,
         getNewSequence,
     } = useTyping(text);
-    const { time, isDone } = useTimer(60);
-    const { accuracy, netWPM, correctTypes, falseTypes } = useWPM(
+    const { time, isDone } = useTimer(6);
+    const { accuracy, netWPM, correctTypes, falseTypes, best, updateBest } = useWPM(
         time,
         typingSequence,
     );
 
     useEffect(() => {
-        if (isDone) return;
+        if (isDone) {
+            if(best < netWPM) {
+                updateBest(netWPM)
+            }
+            return
+        };
         const handleKeyDown = (e: KeyboardEvent) => {
             if (isDone) return;
             const currentType = typingSequence[typingIndex];
@@ -57,7 +62,7 @@ function App() {
 
     return (
         <div className="flex flex-col gap-5">
-            <Header />
+            <Header best={best}/>
             {!isDone ? (
                 <>
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />

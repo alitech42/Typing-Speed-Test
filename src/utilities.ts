@@ -79,6 +79,9 @@ export function useWPM(
     const accuracy = (correctTypes / (correctTypes + falseTypes)) * 100;
     const grossWPM = (correctTypes + falseTypes) / 5 / minutes;
     const netWPM = grossWPM - falseTypes / minutes;
+    const [best, setBest] = useState(0)
 
-    return { accuracy, grossWPM, netWPM, correctTypes, falseTypes };
+    const updateBest = (newBest: number) => setBest(newBest) 
+
+    return { accuracy, grossWPM, netWPM, correctTypes, falseTypes, best, updateBest};
 }

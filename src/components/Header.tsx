@@ -1,4 +1,4 @@
-export function Header() {
+export function Header({best}: {best: number}) {
     return (
         <header className="flex justify-between p-2">
             <div>
@@ -19,7 +19,7 @@ export function Header() {
                         src="src/assets/images/icon-personal-best.svg"
                         alt=""
                     />
-                    Best:
+                    Best: {best.toFixed(0)} WPM
                 </p>
             </div>
         </header>
