@@ -32,6 +32,15 @@ export function useTyping(text: string) {
         });
     };
 
+    const resetSequence = (text: string) => {
+        setTypingSequence(() => {
+            const splittedText = text.split("");
+            return splittedText.map((char) => ({ char, status: "undefined" }));
+    });
+    setTypingIndex(0)
+    setStartingIndex(0)
+    }
+
     const increaseIndex = () => setTypingIndex((prev) => prev + 1);
 
     return {
@@ -41,6 +50,7 @@ export function useTyping(text: string) {
         updateStatus,
         increaseIndex,
         getNewSequence,
+        resetSequence
     };
 }
 
@@ -50,19 +60,15 @@ export function useTimer(initialTime: number) {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setTime((prev) => {
-                if (prev <= 0) {
-                    clearInterval(intervalId);
-                    return 0;
-                }
-                return prev - 1;
-            });
+            setTime((prev) => (prev > 0 ? prev - 1 : 0));
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
 
+    const resetTimer = () => setTime(initialTime)
 
-    return { time, isDone };
+
+    return { time, isDone, resetTimer };
 }
 
 export function useWPM(
