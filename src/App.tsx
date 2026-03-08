@@ -17,8 +17,9 @@ function App() {
         updateStatus,
         increaseIndex,
         getNewSequence,
+        resetSequence
     } = useTyping(text);
-    const { time, isDone } = useTimer(6);
+    const { time, isDone, resetTimer } = useTimer(60);
     const { accuracy, netWPM, correctTypes, falseTypes, best, updateBest } = useWPM(
         time,
         typingSequence,
@@ -78,6 +79,7 @@ function App() {
                     accuracy={accuracy}
                     correctTypes={correctTypes}
                     falseTypes={falseTypes}
+                    resetters={[resetTimer, () => resetSequence(data.easy[Math.floor(Math.random() * data.easy.length)].text)]}
                 />
             )}
         </div>

@@ -5,9 +5,13 @@ type ResultsProps = {
     accuracy: number
     correctTypes: number
     falseTypes: number
+    resetters: (() => void)[]
 }
 
-export function Results({wpm, accuracy, correctTypes, falseTypes}: ResultsProps) {
+export function Results({wpm, accuracy, correctTypes, falseTypes, resetters}: ResultsProps) {
+
+    const handleReset = () => resetters.forEach(resetter => resetter())
+
     return (
         <div className="flex flex-col items-center justify-center gap-3 p-2">
             <img src="src/assets/images/icon-completed.svg" />
@@ -18,6 +22,7 @@ export function Results({wpm, accuracy, correctTypes, falseTypes}: ResultsProps)
                 <ResultCard label="Accuracy" value={accuracy.toFixed(2) + '%'} color="hsl(354,63%,57%)"/>
                 <ResultCard label="Characters" value={correctTypes + '/' + falseTypes} color="hsl(140,63%,57%)"/>
             </div>
+            <button className="bg-[hsl(0,0%,100%)] text-[hsl(0,0%,7%)] p-3 rounded-2xl font-bold mt-5" onClick={handleReset}>Go Again</button>
         </div>
     );
 }
