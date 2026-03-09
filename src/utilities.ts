@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { ScoreType, ScoreUI } from "./types";
 
 export function useTyping(text: string) {
     const [typingIndex, setTypingIndex] = useState(0);
@@ -86,12 +87,35 @@ export function useWPM(
     const netWPM = grossWPM - falseTypes / minutes;
     const [best, setBest] = useState(0);
 
+    const scoreUI: Record<
+        ScoreType,
+        ScoreUI
+    > = {
+        firstScore: {
+            header: "Baseline established",
+            message:
+                "You have set the bar. Now the real challenge begins—time to beat it",
+            button: "Beat This Score",
+        },
+        newHighScore: {
+            header: "High Score Smashed",
+            message: "You are getting faster. That was incredible typing",
+            button: "Go Again",
+        },
+        belowHighScore: {
+            header: "Test Completed",
+            message: "Solid run. Keep pushing to beat your high score",
+            button: "Go Again",
+        },
+    };
+
     const updateBest = (newBest: number) => setBest(newBest);
 
     return {
         accuracy,
         grossWPM,
         netWPM,
+        scoreUI,
         correctTypes,
         falseTypes,
         best,
