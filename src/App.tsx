@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Header } from "./components/Header";
 import { Selectors } from "./components/Selectors";
@@ -7,6 +7,7 @@ import { TypingDisplay } from "./components/TypingDisplay";
 import data from "./data.json";
 import { useTimer, useTyping, useWPM } from "./utilities";
 import { Results } from "./components/Results";
+import type { ScoreType } from "./types";
 
 function App() {
     const text = data.easy[Math.floor(Math.random() * data.easy.length)].text;
@@ -19,17 +20,25 @@ function App() {
         getNewSequence,
         resetSequence,
     } = useTyping(text);
-    const { time, isDone, resetTimer } = useTimer(60);
-    const { accuracy, netWPM, correctTypes, falseTypes, best, updateBest } =
-        useWPM(time, typingSequence);
+    const { time, isDone, resetTimer } = useTimer(10);
+    const {
+        accuracy,
+        netWPM,
+        scoreUI,
+        correctTypes,
+        falseTypes,
+        best,
+        updateBest,
+    } = useWPM(time, typingSequence);
+    const [isFirstRun, setIsFirstRun] = useState(true);
+
+    const scoreStatus: ScoreType = isFirstRun
+        ? "firstScore"
+        : netWPM >= best
+          ? "newHighScore"
+          : "belowHighScore";
 
     useEffect(() => {
-        if (isDone) {
-            if (best < netWPM) {
-                updateBest(netWPM);
-            }
-            return;
-        }
         const handleKeyDown = (e: KeyboardEvent) => {
             if (isDone) return;
             const currentType = typingSequence[typingIndex];
@@ -46,6 +55,15 @@ function App() {
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
     }, [typingIndex, typingSequence, isDone]);
+
+    useEffect(() => {
+        if (isDone) {
+            if (!best || best < netWPM) {
+                updateBest(netWPM);
+            }
+            return;
+        }
+    }, [isDone]);
 
     useEffect(() => {
         if (isDone) return;
@@ -84,7 +102,10 @@ function App() {
                                     Math.floor(Math.random() * data.easy.length)
                                 ].text,
                             ),
+                        () => setIsFirstRun(false),
                     ]}
+                    scoreStatus={scoreStatus}
+                    scoreUI={scoreUI}
                 />
             )}
         </div>
