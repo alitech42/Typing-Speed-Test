@@ -39,8 +39,10 @@ function App() {
           ? "newHighScore"
           : "belowHighScore";
 
-
-
+    function handleDifficulty(difficulty: difficultyType) {
+        setDifficulty(difficulty)
+    }
+    
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -85,7 +87,7 @@ function App() {
             {!isDone ? (
                 <>
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />
-                    <Selectors />
+                    <Selectors difficulty={difficulty} handleChange={(difficulty:difficultyType) => handleDifficulty(difficulty)}/>
                     <TypingDisplay
                         typingSequence={typingSequence.slice(startingIndex)}
                         typingIndex={typingIndex - startingIndex}
