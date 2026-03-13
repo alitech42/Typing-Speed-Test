@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import type { ScoreType, ScoreUI } from "./types";
+import type { difficultyType, ScoreType, ScoreUI } from "./types";
+import data from "./data.json";
+
+export function getRandomText(difficulty: difficultyType) {
+    return data[difficulty][Math.floor(Math.random() * data[difficulty].length)]
+        .text;
+}
 
 export function useTyping(text: string) {
     const [typingIndex, setTypingIndex] = useState(0);
@@ -87,10 +93,7 @@ export function useWPM(
     const netWPM = grossWPM - falseTypes / minutes;
     const [best, setBest] = useState(0);
 
-    const scoreUI: Record<
-        ScoreType,
-        ScoreUI
-    > = {
+    const scoreUI: Record<ScoreType, ScoreUI> = {
         firstScore: {
             header: "Baseline established",
             message:

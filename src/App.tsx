@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Header } from "./components/Header";
 import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
 import data from "./data.json";
-import { useTimer, useTyping, useWPM } from "./utilities";
+import { getRandomText, useTimer, useTyping, useWPM } from "./utilities";
 import { Results } from "./components/Results";
-import type { ScoreType } from "./types";
+import type {difficultyType, ScoreType } from "./types";
 
 function App() {
-    const text = data.easy[Math.floor(Math.random() * data.easy.length)].text;
+    const [difficulty, setDifficulty] = useState<difficultyType>('easy')
+    const text = getRandomText(difficulty);
     const {
         typingIndex,
         typingSequence,
@@ -37,6 +38,9 @@ function App() {
         : netWPM >= best
           ? "newHighScore"
           : "belowHighScore";
+
+
+
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -68,8 +72,7 @@ function App() {
     useEffect(() => {
         if (isDone) return;
         if (typingIndex === typingSequence.length) {
-            const text =
-                data.easy[Math.floor(Math.random() * data.easy.length)].text;
+            const text = getRandomText(difficulty);
             getNewSequence(text);
         }
     }, [typingIndex, typingSequence.length]);
@@ -96,12 +99,7 @@ function App() {
                     falseTypes={falseTypes}
                     resetters={[
                         resetTimer,
-                        () =>
-                            resetSequence(
-                                data.easy[
-                                    Math.floor(Math.random() * data.easy.length)
-                                ].text,
-                            ),
+                        () => resetSequence(getRandomText(difficulty)),
                         () => setIsFirstRun(false),
                     ]}
                     scoreStatus={scoreStatus}
