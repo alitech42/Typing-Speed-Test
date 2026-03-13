@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { DropdownMenu } from "./Dropdown";
+import type { difficultyType } from "../types";
 
-export function DifficultySelector() {
+export function DifficultySelector({
+    difficulty,
+    handleChange,
+}: {
+    difficulty: difficultyType;
+    handleChange: (difficulty: difficultyType) => void;
+}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [difficulty, setDifficulty] = useState("easy");
 
     function handleClick() {
         setIsOpen((prev) => !prev);
-    }
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setDifficulty(e.target.value);
     }
 
     return (

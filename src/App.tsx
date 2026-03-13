@@ -4,13 +4,14 @@ import { Header } from "./components/Header";
 import { Selectors } from "./components/Selectors";
 import { Stats } from "./components/Stats";
 import { TypingDisplay } from "./components/TypingDisplay";
-import data from "./data.json";
-import { useTimer, useTyping, useWPM } from "./utilities";
+import { getRandomText, useTimer, useTyping, useWPM } from "./utilities";
 import { Results } from "./components/Results";
-import type { ScoreType } from "./types";
+import type { difficultyType, ScoreType } from "./types";
 
 function App() {
-    const text = data.easy[Math.floor(Math.random() * data.easy.length)].text;
+    const [selectedDifficulty, setSelectedDifficulty] =
+        useState<difficultyType>("easy");
+    const text = getRandomText(selectedDifficulty);
     const {
         typingIndex,
         typingSequence,
@@ -37,6 +38,15 @@ function App() {
         : netWPM >= best
           ? "newHighScore"
           : "belowHighScore";
+
+    function handleDifficulty(difficulty: difficultyType) {
+        setSelectedDifficulty(difficulty);
+    }
+
+    useEffect(() => {
+        resetSequence(getRandomText(selectedDifficulty));
+        resetTimer();
+    }, [selectedDifficulty]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -68,8 +78,7 @@ function App() {
     useEffect(() => {
         if (isDone) return;
         if (typingIndex === typingSequence.length) {
-            const text =
-                data.easy[Math.floor(Math.random() * data.easy.length)].text;
+            const text = getRandomText(selectedDifficulty);
             getNewSequence(text);
         }
     }, [typingIndex, typingSequence.length]);
@@ -82,7 +91,12 @@ function App() {
             {!isDone ? (
                 <>
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />
-                    <Selectors />
+                    <Selectors
+                        difficulty={selectedDifficulty}
+                        handleChange={(difficulty: difficultyType) =>
+                            handleDifficulty(difficulty)
+                        }
+                    />
                     <TypingDisplay
                         typingSequence={typingSequence.slice(startingIndex)}
                         typingIndex={typingIndex - startingIndex}
@@ -96,12 +110,7 @@ function App() {
                     falseTypes={falseTypes}
                     resetters={[
                         resetTimer,
-                        () =>
-                            resetSequence(
-                                data.easy[
-                                    Math.floor(Math.random() * data.easy.length)
-                                ].text,
-                            ),
+                        () => resetSequence(getRandomText(selectedDifficulty)),
                         () => setIsFirstRun(false),
                     ]}
                     scoreStatus={scoreStatus}

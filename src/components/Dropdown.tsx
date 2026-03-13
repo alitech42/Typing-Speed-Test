@@ -1,9 +1,12 @@
+import type React from "react";
+import type { difficultyType } from "../types";
+
 type DropdownMenuProps = {
     name: string;
     options: string[];
     value: string;
     isOpen: boolean;
-    handleChange: React.ChangeEventHandler<HTMLInputElement>;
+    handleChange: (difficulty: difficultyType) => void;
 };
 
 export function DropdownMenu({
@@ -26,7 +29,9 @@ export function DropdownMenu({
                             value={option}
                             name={name}
                             checked={value === option}
-                            onChange={(e) => handleChange(e)}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>,
+                            ) => handleChange(e.target.value as difficultyType)}
                         />
                         {option.charAt(0).toUpperCase() + option.slice(1)}
                     </label>

@@ -5,3 +5,5 @@ export type ScoreUI = {
     message: string;
     button: string;
 };
+
+export type difficultyType = "easy" | "medium" | "hard";
