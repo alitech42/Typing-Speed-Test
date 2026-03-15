@@ -18,7 +18,15 @@ export function DifficultySelector({
     return (
         <div className="border border-[hsl(240,3%,46%)] text-center w-[50%] rounded-lg">
             <div className="relative">
-                <button onClick={handleClick} className="w-full">
+                <button
+                    onClick={handleClick}
+                    onKeyDown={(e) => {
+                        if (e.code === "Space") {
+                            e.preventDefault();
+                        }
+                    }}
+                    className="w-full"
+                >
                     Difficulty
                 </button>
 
