@@ -17,12 +17,13 @@ function App() {
         typingIndex,
         typingSequence,
         startingIndex,
+        isPassageFinished,
         updateStatus,
         increaseIndex,
         getNewSequence,
         resetSequence,
     } = useTyping(text);
-    const { time, isDone, resetTimer } = useTimer(10);
+    const { time, isDone, resetTimer } = useTimer(110, selectedMode);
     const {
         accuracy,
         netWPM,
@@ -33,7 +34,7 @@ function App() {
         updateBest,
     } = useWPM(time, typingSequence);
     const [isFirstRun, setIsFirstRun] = useState(true);
-
+    const isFinished = selectedMode === "timed" ? isDone : isPassageFinished
     const scoreStatus: ScoreType = isFirstRun
         ? "firstScore"
         : netWPM >= best
@@ -81,8 +82,9 @@ function App() {
     }, [isDone]);
 
     useEffect(() => {
-        if (isDone) return;
-        if (typingIndex === typingSequence.length) {
+         
+        if (isFinished) return;
+        if (isPassageFinished) {
             const text = getRandomText(selectedDifficulty);
             getNewSequence(text);
         }
@@ -93,7 +95,7 @@ function App() {
     return (
         <div className="flex flex-col gap-5">
             <Header best={best} />
-            {!isDone ? (
+            {!isFinished ? (
                 <>
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />
                     <Selectors
