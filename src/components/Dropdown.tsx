@@ -6,7 +6,7 @@ type DropdownMenuProps = {
     options: string[];
     value: string;
     isOpen: boolean;
-    handleChange: (difficulty: difficultyType) => void;
+    handleDifficulty: (difficulty: difficultyType) => void;
 };
 
 export function DropdownMenu({
@@ -14,7 +14,7 @@ export function DropdownMenu({
     options,
     value,
     isOpen,
-    handleChange,
+    handleDifficulty,
 }: DropdownMenuProps) {
     return (
         <div
@@ -31,7 +31,7 @@ export function DropdownMenu({
                             checked={value === option}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>,
-                            ) => handleChange(e.target.value as difficultyType)}
+                            ) => handleDifficulty(e.target.value as difficultyType)}
                         />
                         {option.charAt(0).toUpperCase() + option.slice(1)}
                     </label>

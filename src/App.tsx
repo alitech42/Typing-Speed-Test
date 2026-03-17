@@ -100,7 +100,7 @@ function App() {
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />
                     <Selectors
                         difficulty={selectedDifficulty}
-                        handleChange={(difficulty: difficultyType) =>
+                        handleDifficulty={(difficulty: difficultyType) =>
                             handleDifficulty(difficulty)
                         }
                     />

@@ -4,16 +4,16 @@ import { ModeSelector } from "./ModeSelector";
 
 export function Selectors({
     difficulty,
-    handleChange,
+    handleDifficulty,
 }: {
     difficulty: difficultyType;
-    handleChange: (difficulty: difficultyType) => void;
+    handleDifficulty: (difficulty: difficultyType) => void;
 }) {
     return (
         <div className="flex flex-row gap-4">
             <DifficultySelector
                 difficulty={difficulty}
-                handleChange={handleChange}
+                handleDifficulty={handleDifficulty}
             />
             <ModeSelector />
         </div>
