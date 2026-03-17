@@ -11,6 +11,7 @@ import type { difficultyType, ScoreType } from "./types";
 function App() {
     const [selectedDifficulty, setSelectedDifficulty] =
         useState<difficultyType>("easy");
+    const [selectedMode, setSelectedMode] = useState("timed")
     const text = getRandomText(selectedDifficulty);
     const {
         typingIndex,
@@ -41,6 +42,10 @@ function App() {
 
     function handleDifficulty(difficulty: difficultyType) {
         setSelectedDifficulty(difficulty);
+    }
+
+    function handleMode(mode: string) {
+        setSelectedMode(mode)
     }
 
     useEffect(() => {
