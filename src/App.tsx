@@ -11,7 +11,7 @@ import type { difficultyType, ScoreType } from "./types";
 function App() {
     const [selectedDifficulty, setSelectedDifficulty] =
         useState<difficultyType>("easy");
-    const [selectedMode, setSelectedMode] = useState("timed")
+    const [selectedMode, setSelectedMode] = useState("timed");
     const text = getRandomText(selectedDifficulty);
     const {
         typingIndex,
@@ -34,7 +34,7 @@ function App() {
         updateBest,
     } = useWPM(time, typingSequence);
     const [isFirstRun, setIsFirstRun] = useState(true);
-    const isFinished = selectedMode === "timed" ? isDone : isPassageFinished
+    const isFinished = selectedMode === "timed" ? isDone : isPassageFinished;
     const scoreStatus: ScoreType = isFirstRun
         ? "firstScore"
         : netWPM >= best
@@ -46,7 +46,7 @@ function App() {
     }
 
     function handleMode(mode: string) {
-        setSelectedMode(mode)
+        setSelectedMode(mode);
     }
 
     useEffect(() => {
@@ -82,7 +82,6 @@ function App() {
     }, [isDone]);
 
     useEffect(() => {
-         
         if (isFinished) return;
         if (isPassageFinished) {
             const text = getRandomText(selectedDifficulty);

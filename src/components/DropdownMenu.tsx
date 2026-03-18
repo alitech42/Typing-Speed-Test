@@ -1,6 +1,3 @@
-import type React from "react";
-import type { difficultyType } from "../types";
-
 type DropdownMenuProps<T extends string> = {
     name: string;
     options: T[];
