@@ -1,21 +1,21 @@
 import type React from "react";
 import type { difficultyType } from "../types";
 
-type DropdownMenuProps = {
+type DropdownMenuProps<T extends string> = {
     name: string;
-    options: string[];
-    value: string;
+    options: T[];
+    value: T;
     isOpen: boolean;
-    handleDifficulty: (difficulty: difficultyType) => void;
+    handleChange: (value: T) => void;
 };
 
-export function DropdownMenu({
+export function DropdownMenu<T extends string>({
     name,
     options,
     value,
     isOpen,
-    handleDifficulty,
-}: DropdownMenuProps) {
+    handleChange,
+}: DropdownMenuProps<T>) {
     return (
         <div
             className={`${isOpen ? "flex" : "hidden"} flex flex-col absolute mt-2 rounded-lg bg-[hsl(0,0%,15%)] w-full`}
@@ -29,9 +29,7 @@ export function DropdownMenu({
                             value={option}
                             name={name}
                             checked={value === option}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>,
-                            ) => handleDifficulty(e.target.value as difficultyType)}
+                            onChange={() => handleChange(option)}
                         />
                         {option.charAt(0).toUpperCase() + option.slice(1)}
                     </label>
