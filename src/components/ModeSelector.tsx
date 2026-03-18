@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DropdownMenu } from "./Dropdown";
+import { DropdownMenu } from "./DropdownMenu";
 
 export function ModeSelector({mode, handleMode}: {mode: string; handleMode: (value: string) => void}) {
     const [isOpen, setIsOpen] = useState(false);

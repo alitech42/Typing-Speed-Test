@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DropdownMenu } from "./Dropdown";
+import { DropdownMenu } from "./DropdownMenu";
 import type { difficultyType } from "../types";
 
 export function DifficultySelector({
