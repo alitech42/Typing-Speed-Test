@@ -52,7 +52,7 @@ function App() {
     useEffect(() => {
         resetSequence(getRandomText(selectedDifficulty));
         resetTimer();
-    }, [selectedDifficulty]);
+    }, [selectedDifficulty, selectedMode]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -100,9 +100,11 @@ function App() {
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />
                     <Selectors
                         difficulty={selectedDifficulty}
-                        handleDifficulty={(difficulty: difficultyType) =>
-                            handleDifficulty(difficulty)
+                        handleDifficulty={(value: difficultyType) =>
+                            handleDifficulty(value)
                         }
+                        mode={selectedMode}
+                        handleMode={(value: string) => handleMode(value)}
                     />
                     <TypingDisplay
                         typingSequence={typingSequence.slice(startingIndex)}

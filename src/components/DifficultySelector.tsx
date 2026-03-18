@@ -7,7 +7,7 @@ export function DifficultySelector({
     handleDifficulty,
 }: {
     difficulty: difficultyType;
-    handleDifficulty: (difficulty: difficultyType) => void;
+    handleDifficulty: (value: difficultyType) => void;
 }) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -35,7 +35,7 @@ export function DifficultySelector({
                     options={["easy", "medium", "hard"]}
                     value={difficulty}
                     isOpen={isOpen}
-                    handleDifficulty={handleDifficulty}
+                    handleChange={handleDifficulty}
                 />
             </div>
         </div>
