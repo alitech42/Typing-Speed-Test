@@ -2,13 +2,15 @@ import { useState } from "react";
 import { DropdownMenu } from "./DropdownMenu";
 import type { difficultyType } from "../types";
 
+type DifficultySelectorProps = {
+    difficulty: difficultyType;
+    handleDifficulty: (value: difficultyType) => void;
+};
+
 export function DifficultySelector({
     difficulty,
     handleDifficulty,
-}: {
-    difficulty: difficultyType;
-    handleDifficulty: (value: difficultyType) => void;
-}) {
+}: DifficultySelectorProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleClick() {

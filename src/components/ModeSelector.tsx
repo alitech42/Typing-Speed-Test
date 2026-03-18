@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { DropdownMenu } from "./DropdownMenu";
 
-export function ModeSelector({mode, handleMode}: {mode: string; handleMode: (value: string) => void}) {
+type ModeSelectorProps = {
+    mode: string;
+    handleMode: (value: string) => void;
+};
+
+export function ModeSelector({ mode, handleMode }: ModeSelectorProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleClick() {
