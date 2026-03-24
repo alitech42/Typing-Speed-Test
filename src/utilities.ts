@@ -14,6 +14,7 @@ export function useTyping(text: string) {
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
     const [startingIndex, setStartingIndex] = useState(0);
+    const isPassageFinished = typingIndex >= typingSequence.length;
 
     const updateStatus = (index: number, status: string) => {
         setTypingSequence((prev) =>
@@ -54,6 +55,7 @@ export function useTyping(text: string) {
         typingIndex,
         startingIndex,
         typingSequence,
+        isPassageFinished,
         updateStatus,
         increaseIndex,
         getNewSequence,
@@ -61,27 +63,44 @@ export function useTyping(text: string) {
     };
 }
 
-export function useTimer(initialTime: number) {
+export function useTimer(
+    initialTime: number,
+    selectedMode: string,
+    isPassageFinished: boolean,
+) {
     const [time, setTime] = useState(initialTime);
-    const isDone = time === 0;
+    const isDone = selectedMode !== "passage" && time === 0;
+
+    useEffect(() => console.log(time), [time]);
+
+    useEffect(() => {
+        setTime(selectedMode === "passage" ? 0 : initialTime);
+    }, [selectedMode, initialTime]);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
+            if (selectedMode === "passage") {
+                setTime((prev) => (!isPassageFinished ? prev + 1 : prev));
+                return;
+            }
+
             setTime((prev) => (prev > 0 ? prev - 1 : 0));
         }, 1000);
         return () => clearInterval(intervalId);
-    }, []);
+    }, [selectedMode, isPassageFinished]);
 
-    const resetTimer = () => setTime(initialTime);
+    const resetTimer = () =>
+        setTime(selectedMode === "passage" ? 0 : initialTime);
 
     return { time, isDone, resetTimer };
 }
 
 export function useWPM(
     time: number,
+    selectedMode: string,
     typingSequence: { char: string; status: string }[],
 ) {
-    const minutes = (60 - time) / 60;
+    const minutes = (selectedMode === "passage" ? time : 60 - time) / 60;
     const correctTypes = typingSequence.filter(
         ({ status }) => status === "correct",
     ).length;

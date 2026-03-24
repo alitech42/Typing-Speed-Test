@@ -11,17 +11,23 @@ import type { difficultyType, ScoreType } from "./types";
 function App() {
     const [selectedDifficulty, setSelectedDifficulty] =
         useState<difficultyType>("easy");
+    const [selectedMode, setSelectedMode] = useState("timed");
     const text = getRandomText(selectedDifficulty);
     const {
         typingIndex,
         typingSequence,
         startingIndex,
+        isPassageFinished,
         updateStatus,
         increaseIndex,
         getNewSequence,
         resetSequence,
     } = useTyping(text);
-    const { time, isDone, resetTimer } = useTimer(10);
+    const { time, isDone, resetTimer } = useTimer(
+        60,
+        selectedMode,
+        isPassageFinished,
+    );
     const {
         accuracy,
         netWPM,
@@ -30,9 +36,9 @@ function App() {
         falseTypes,
         best,
         updateBest,
-    } = useWPM(time, typingSequence);
+    } = useWPM(time, selectedMode, typingSequence);
     const [isFirstRun, setIsFirstRun] = useState(true);
-
+    const isFinished = selectedMode === "timed" ? isDone : isPassageFinished;
     const scoreStatus: ScoreType = isFirstRun
         ? "firstScore"
         : netWPM >= best
@@ -43,14 +49,18 @@ function App() {
         setSelectedDifficulty(difficulty);
     }
 
+    function handleMode(mode: string) {
+        setSelectedMode(mode);
+    }
+
     useEffect(() => {
         resetSequence(getRandomText(selectedDifficulty));
         resetTimer();
-    }, [selectedDifficulty]);
+    }, [selectedDifficulty, selectedMode]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (isDone) return;
+            if (isFinished) return;
             const currentType = typingSequence[typingIndex];
             if (e.key.length > 1) return;
 
@@ -76,8 +86,8 @@ function App() {
     }, [isDone]);
 
     useEffect(() => {
-        if (isDone) return;
-        if (typingIndex === typingSequence.length) {
+        if (isFinished) return;
+        if (isPassageFinished) {
             const text = getRandomText(selectedDifficulty);
             getNewSequence(text);
         }
@@ -88,14 +98,16 @@ function App() {
     return (
         <div className="flex flex-col gap-5">
             <Header best={best} />
-            {!isDone ? (
+            {!isFinished ? (
                 <>
                     <Stats wpm={netWPM} accuracy={accuracy} time={time} />
                     <Selectors
                         difficulty={selectedDifficulty}
-                        handleChange={(difficulty: difficultyType) =>
-                            handleDifficulty(difficulty)
+                        handleDifficulty={(value: difficultyType) =>
+                            handleDifficulty(value)
                         }
+                        mode={selectedMode}
+                        handleMode={(value: string) => handleMode(value)}
                     />
                     <TypingDisplay
                         typingSequence={typingSequence.slice(startingIndex)}

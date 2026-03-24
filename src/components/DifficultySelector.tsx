@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { DropdownMenu } from "./Dropdown";
+import { DropdownMenu } from "./DropdownMenu";
 import type { difficultyType } from "../types";
+
+type DifficultySelectorProps = {
+    difficulty: difficultyType;
+    handleDifficulty: (value: difficultyType) => void;
+};
 
 export function DifficultySelector({
     difficulty,
-    handleChange,
-}: {
-    difficulty: difficultyType;
-    handleChange: (difficulty: difficultyType) => void;
-}) {
+    handleDifficulty,
+}: DifficultySelectorProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleClick() {
@@ -35,7 +37,7 @@ export function DifficultySelector({
                     options={["easy", "medium", "hard"]}
                     value={difficulty}
                     isOpen={isOpen}
-                    handleChange={handleChange}
+                    handleChange={handleDifficulty}
                 />
             </div>
         </div>

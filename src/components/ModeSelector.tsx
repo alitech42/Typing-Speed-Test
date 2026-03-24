@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { DropdownMenu } from "./Dropdown";
+import { DropdownMenu } from "./DropdownMenu";
 
-export function ModeSelector() {
+type ModeSelectorProps = {
+    mode: string;
+    handleMode: (value: string) => void;
+};
+
+export function ModeSelector({ mode, handleMode }: ModeSelectorProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const [mode, setMode] = useState("timed");
 
     function handleClick() {
         setIsOpen((prev) => !prev);
-    }
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setMode(e.target.value);
     }
 
     return (
@@ -25,7 +25,7 @@ export function ModeSelector() {
                     options={["timed", "passage"]}
                     value={mode}
                     isOpen={isOpen}
-                    handleChange={handleChange}
+                    handleChange={handleMode}
                 />
             </div>
         </div>
