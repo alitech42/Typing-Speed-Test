@@ -63,26 +63,31 @@ export function useTyping(text: string) {
     };
 }
 
-export function useTimer(initialTime: number, selectedMode: string) {
+export function useTimer(
+    initialTime: number,
+    selectedMode: string,
+    isPassageFinished: boolean,
+) {
     const [time, setTime] = useState(initialTime);
-    const isDone = time === 0;
+    const isDone = selectedMode !== "passage" && time === 0;
+
+    useEffect(() => console.log(time), [time]);
 
     useEffect(() => {
-        if (selectedMode === "passage") {
-            setTime(0);
-        } else {
-            setTime(initialTime);
-        }
+        setTime(selectedMode === "passage" ? 0 : initialTime);
+    }, [selectedMode, initialTime]);
+
+    useEffect(() => {
         const intervalId = setInterval(() => {
             if (selectedMode === "passage") {
-                setTime((prev) => prev + 1);
+                setTime((prev) => (!isPassageFinished ? prev + 1 : prev));
                 return;
             }
 
             setTime((prev) => (prev > 0 ? prev - 1 : 0));
         }, 1000);
         return () => clearInterval(intervalId);
-    }, [selectedMode]);
+    }, [selectedMode, isPassageFinished]);
 
     const resetTimer = () =>
         setTime(selectedMode === "passage" ? 0 : initialTime);

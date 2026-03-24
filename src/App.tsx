@@ -23,7 +23,11 @@ function App() {
         getNewSequence,
         resetSequence,
     } = useTyping(text);
-    const { time, isDone, resetTimer } = useTimer(60, selectedMode);
+    const { time, isDone, resetTimer } = useTimer(
+        60,
+        selectedMode,
+        isPassageFinished,
+    );
     const {
         accuracy,
         netWPM,
