@@ -60,7 +60,7 @@ function App() {
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (isDone) return;
+            if (isFinished) return;
             const currentType = typingSequence[typingIndex];
             if (e.key.length > 1) return;
 
