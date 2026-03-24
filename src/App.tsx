@@ -23,7 +23,7 @@ function App() {
         getNewSequence,
         resetSequence,
     } = useTyping(text);
-    const { time, isDone, resetTimer } = useTimer(110, selectedMode);
+    const { time, isDone, resetTimer } = useTimer(60, selectedMode);
     const {
         accuracy,
         netWPM,
@@ -32,7 +32,7 @@ function App() {
         falseTypes,
         best,
         updateBest,
-    } = useWPM(time, typingSequence);
+    } = useWPM(time, selectedMode, typingSequence);
     const [isFirstRun, setIsFirstRun] = useState(true);
     const isFinished = selectedMode === "timed" ? isDone : isPassageFinished;
     const scoreStatus: ScoreType = isFirstRun

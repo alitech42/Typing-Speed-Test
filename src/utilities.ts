@@ -14,7 +14,7 @@ export function useTyping(text: string) {
         return splittedText.map((char) => ({ char, status: "undefined" }));
     });
     const [startingIndex, setStartingIndex] = useState(0);
-    const isPassageFinished = typingIndex >= typingSequence.length
+    const isPassageFinished = typingIndex >= typingSequence.length;
 
     const updateStatus = (index: number, status: string) => {
         setTypingSequence((prev) =>
@@ -68,23 +68,34 @@ export function useTimer(initialTime: number, selectedMode: string) {
     const isDone = time === 0;
 
     useEffect(() => {
-        if(selectedMode === "passage") return
+        if (selectedMode === "passage") {
+            setTime(0);
+        } else {
+            setTime(initialTime);
+        }
         const intervalId = setInterval(() => {
+            if (selectedMode === "passage") {
+                setTime((prev) => prev + 1);
+                return;
+            }
+
             setTime((prev) => (prev > 0 ? prev - 1 : 0));
         }, 1000);
         return () => clearInterval(intervalId);
-    }, []);
+    }, [selectedMode]);
 
-    const resetTimer = () => setTime(initialTime);
+    const resetTimer = () =>
+        setTime(selectedMode === "passage" ? 0 : initialTime);
 
     return { time, isDone, resetTimer };
 }
 
 export function useWPM(
     time: number,
+    selectedMode: string,
     typingSequence: { char: string; status: string }[],
 ) {
-    const minutes = (60 - time) / 60;
+    const minutes = (selectedMode === "passage" ? time : 60 - time) / 60;
     const correctTypes = typingSequence.filter(
         ({ status }) => status === "correct",
     ).length;
