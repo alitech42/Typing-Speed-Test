@@ -16,7 +16,15 @@ export function ModeSelector({ mode, handleMode }: ModeSelectorProps) {
     return (
         <div className="border border-[hsl(240,3%,46%)] text-center w-[50%] rounded-2xl">
             <div className="relative">
-                <button onClick={handleClick} className="w-full">
+                <button
+                    onClick={handleClick}
+                    onKeyDown={(e) => {
+                        if (e.code === "Space") {
+                            e.preventDefault();
+                        }
+                    }}
+                    className="w-full"
+                >
                     Mode
                 </button>
 
