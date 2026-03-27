@@ -77,13 +77,13 @@ function App() {
     }, [typingIndex, typingSequence, isDone]);
 
     useEffect(() => {
-        if (isDone) {
+        if (isFinished) {
             if (!best || best < netWPM) {
                 updateBest(netWPM);
             }
             return;
         }
-    }, [isDone]);
+    }, [isFinished]);
 
     useEffect(() => {
         if (isFinished) return;
