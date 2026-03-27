@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DropdownMenu } from "./DropdownMenu";
 import type { difficultyType } from "../types";
 
@@ -16,6 +16,9 @@ export function DifficultySelector({
     function handleClick() {
         setIsOpen((prev) => !prev);
     }
+    useEffect(() => {
+        setIsOpen(false);
+    }, [difficulty]);
 
     return (
         <div className="border border-[hsl(240,3%,46%)] text-center w-[50%] rounded-lg">

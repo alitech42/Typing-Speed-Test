@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DropdownMenu } from "./DropdownMenu";
 
 type ModeSelectorProps = {
@@ -12,6 +12,9 @@ export function ModeSelector({ mode, handleMode }: ModeSelectorProps) {
     function handleClick() {
         setIsOpen((prev) => !prev);
     }
+    useEffect(() => {
+        setIsOpen(false)
+    }, [mode])
 
     return (
         <div className="border border-[hsl(240,3%,46%)] text-center w-[50%] rounded-2xl">
